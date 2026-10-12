@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 import DashboardPage from './pages/DashboardPage';
 import DatasetUploadPage from './pages/DatasetUploadPage';
 import CareerAnalysisPage from './pages/CareerAnalysisPage';
@@ -76,72 +77,70 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans">
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        datasetInfo={datasetInfo}
-      />
+    <div className="min-h-screen bg-[#060913] text-slate-100 flex font-sans antialiased overflow-x-hidden">
+      {/* Fixed Sidebar */}
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {activeTab === 'dashboard' && (
-          <DashboardPage
-            datasetInfo={datasetInfo}
-            careerResults={careerResults}
-            phaseResults={phaseResults}
-            setActiveTab={setActiveTab}
-          />
-        )}
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 bg-[#060913]">
+        <Header activeTab={activeTab} datasetInfo={datasetInfo} />
 
-        {activeTab === 'upload' && (
-          <DatasetUploadPage
-            datasetInfo={datasetInfo}
-            onRefreshInfo={fetchDatasetInfo}
-          />
-        )}
+        <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto">
+          {activeTab === 'dashboard' && (
+            <DashboardPage
+              datasetInfo={datasetInfo}
+              careerResults={careerResults}
+              phaseResults={phaseResults}
+              setActiveTab={setActiveTab}
+            />
+          )}
 
-        {activeTab === 'career' && (
-          <CareerAnalysisPage
-            careerResults={careerResults}
-            onRunCareerAnalysis={runCareerAnalysis}
-            loading={loadingCareer}
-            setActiveTab={setActiveTab}
-            setSelectedPlayer={setSelectedPlayer}
-          />
-        )}
+          {activeTab === 'upload' && (
+            <DatasetUploadPage
+              datasetInfo={datasetInfo}
+              onRefreshInfo={fetchDatasetInfo}
+            />
+          )}
 
-        {activeTab === 'phasewise' && (
-          <PhaseWisePage
-            phaseResults={phaseResults}
-            onRunPhaseAnalysis={runPhaseAnalysis}
-            loading={loadingPhase}
-            setActiveTab={setActiveTab}
-            setSelectedPlayer={setSelectedPlayer}
-          />
-        )}
+          {activeTab === 'career' && (
+            <CareerAnalysisPage
+              careerResults={careerResults}
+              onRunCareerAnalysis={runCareerAnalysis}
+              loading={loadingCareer}
+              setActiveTab={setActiveTab}
+              setSelectedPlayer={setSelectedPlayer}
+            />
+          )}
 
-        {activeTab === 'comparison' && (
-          <AlgorithmComparisonPage />
-        )}
+          {activeTab === 'phasewise' && (
+            <PhaseWisePage
+              phaseResults={phaseResults}
+              onRunPhaseAnalysis={runPhaseAnalysis}
+              loading={loadingPhase}
+              setActiveTab={setActiveTab}
+              setSelectedPlayer={setSelectedPlayer}
+            />
+          )}
 
-        {activeTab === 'visualizations' && (
-          <VisualizationsPage
-            careerResults={careerResults}
-            phaseResults={phaseResults}
-          />
-        )}
+          {activeTab === 'comparison' && (
+            <AlgorithmComparisonPage />
+          )}
 
-        {activeTab === 'profile' && (
-          <PlayerProfilePage
-            selectedPlayer={selectedPlayer}
-            setSelectedPlayer={setSelectedPlayer}
-          />
-        )}
-      </main>
+          {activeTab === 'visualizations' && (
+            <VisualizationsPage
+              careerResults={careerResults}
+              phaseResults={phaseResults}
+            />
+          )}
 
-      <footer className="border-t border-slate-800/80 py-4 bg-[#0f172a]/60 text-center text-xs text-slate-500 font-mono">
-        Advanced Machine Learning-Based Cricket Batsman Performance Clustering & Phase-Wise Role Discovery
-      </footer>
+          {activeTab === 'profile' && (
+            <PlayerProfilePage
+              selectedPlayer={selectedPlayer}
+              setSelectedPlayer={setSelectedPlayer}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 }
